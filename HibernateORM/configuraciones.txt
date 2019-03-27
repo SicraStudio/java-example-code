@@ -1,0 +1,162 @@
+Os paso los ficheros de configuracion de las tablas que os haran falta para hacer algunos ejemplos
+
+Fichero de configuración para el ejemplo 1
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ejemplo01.Profesor">
+        <id column="Id" name="id" type="integer"/>
+        <property name="nombre"/>
+        <property name="ape1"/>
+        <property name="ape2"/>
+    </class>
+    
+    
+    <query name="findAllProfesores"><![CDATA[
+        SELECT p FROM Profesor p
+    ]]></query>       
+</hibernate-mapping>
+
+Fichero de configuración de la tabla CicloFormativo para el ejemplo 2
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ejemplo02.Ciclo" table="CicloFormativo" >
+    <id name="idCiclo" column="IdCiclo" type="integer"/>
+    <property name="nombre" column="nombreCiclo" />
+    <property name="horas" />
+
+  </class>
+</hibernate-mapping>
+
+
+Ficheros de configuracion de tablas para el ejemplo 4
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ejemplo04.CorreoElectronico" >
+    <id column="IdCorreo" name="idCorreo" type="integer" />
+    <property name="direccionCorreo" />
+
+
+    <many-to-one name="profesor" >
+            <column name="idProfesor"  />
+    </many-to-one>
+
+
+  </class>
+</hibernate-mapping>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ejemplo04.Direccion" >
+    <id column="Id" name="id" type="integer"/>
+    <property name="calle"/>
+    <property name="numero"/>
+   
+    <many-to-one name="municipio">
+             <column name="idMunicipio"  />
+     </many-to-one>
+    
+    <property name="provincia"/>
+    
+  </class>
+</hibernate-mapping>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ejemplo04.Municipio" table="Municipios" >
+        <id name="idMunicipio" type="integer"  >
+            <generator class="identity" />
+        </id>
+        <property name="codProvincia" />
+        <property name="codMunicipio" />
+        <property name="nombre" column="NombreMunicipio" />
+    </class> 
+</hibernate-mapping>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ejemplo04.Profesor" >
+        <id column="Id" name="id" type="integer" >
+            <generator class="increment" />
+        </id>
+    
+        <component name="nombre">
+            <property name="nombre" />
+            <property name="ape1" />
+            <property name="ape2" />
+        </component>
+    
+        <one-to-one name="direccion" cascade="all" />
+    
+        <set name="correosElectronicos"  cascade="all" inverse="true"   >
+            <key>
+                <column name="idProfesor" />
+            </key>            
+            <one-to-many class="ejemplo04.CorreoElectronico" />
+        </set>
+    </class>
+</hibernate-mapping>
+
+
+
+
+
+
+
+Ahora para el ejemplo 5
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ejemplo05.CorreoElectronico" >
+    <id column="IdCorreo" name="idCorreo" type="integer" />
+    <property name="direccionCorreo" />
+
+
+    <many-to-one name="profesor" >
+            <column name="idProfesor"  />
+    </many-to-one>
+
+
+  </class>
+</hibernate-mapping>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ejemplo05.Profesor" >
+    <id column="Id" name="id" type="integer" >
+        <generator class="increment" />
+    </id>
+    <property name="nombre" />
+    <property name="ape1" />
+    <property name="ape2" />
+    
+    <set name="correosElectronicos"  cascade="all" inverse="true"   >
+        <key>
+            <column name="idProfesor" />
+        </key>            
+        <one-to-many class="ejemplo05.CorreoElectronico" />
+    </set>
+    
+    <sql-insert>INSERT INTO Profesor (Nombre,Ape1,Ape2,Id) VALUES (?,?,?,?)</sql-insert>
+    <sql-update>UPDATE Profesor SET Nombre=?,Ape1=?,Ape2=? WHERE Id=? </sql-update>
+    <sql-delete>DELETE FROM Profesor WHERE Id=?</sql-delete>
+  </class>
+</hibernate-mapping>
+
+
+
+
